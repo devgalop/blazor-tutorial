@@ -8,8 +8,10 @@
     {
 
         <li>
-            <input type="checkbox" @bind="todo.IsDone" />
-            <p>@todo.Title</p>
+            <label>
+                <input type="checkbox" @bind="todo.IsDone" />
+                &nbsp; @todo.Title
+            </label>
         </li>
     }
 </ul>
