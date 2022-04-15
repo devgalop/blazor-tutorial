@@ -1,4 +1,4 @@
-namespace RomanNumber.Model
+namespace RomanNumeral.Model
 {
     public class RomanRequest
     {

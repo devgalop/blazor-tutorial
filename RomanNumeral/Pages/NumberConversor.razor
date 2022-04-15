@@ -2,6 +2,68 @@
 
 <h3>Conversor:</h3>
 
+<div class="mb-3">
+    <select class="form-select" name="conversionType" @bind="_conversionTypeSelected">
+        <option value="0">Select a conversion type</option>
+        @foreach(var conversionType in _conversionTypes)
+        {
+            <option value="@conversionType.Id">@conversionType.Title</option>
+        }
+    </select>
+</div>
+
+<div class="mb-3">
+    <h4>Conversion type selected : @_conversionTypeSelected</h4>
+    @if(_conversionTypeSelected == 1)
+    {
+        <div class="">
+            <label for="">Number:</label>
+            <input type="text" placeholder="Write a number" @bind="_naturalRequest.Number">
+            <button class="btn btn-primary" @onclick="ConvertFromNaturalToRoman">Convert</button>
+        </div>
+        @if(!string.IsNullOrEmpty(_naturalResponse.RomanNumberConverted))
+        {
+            <div class="" style="padding-top: 20px">
+                <h4 class="alert alert-primary">The number @_naturalRequest.Number converted to roman number is: @_naturalResponse.RomanNumberConverted</h4>
+            </div>
+        }
+    }else if(_conversionTypeSelected == 2)
+    {
+        <p>Se ha seleccionado la 2</p>
+    }
+</div>
+
+
+
 @code {
+    private List<ConversionType> _conversionTypes = new();
+    private int _conversionTypeSelected;
+    private RomanRequest _romanRequest = new();
+    private NaturalRequest _naturalRequest = new();
+    private RomanResponse _romanRespone = new();
+    private NaturalResponse _naturalResponse = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _conversionTypes = new List<ConversionType>()
+        {
+            new ConversionType()
+            {
+                Id = 1,
+                Title = "From Natural to Roman"
+            },
+            new ConversionType()
+            {
+                Id = 2,
+                Title = "From Roman to Natural"
+            }
+        };
+    }
+
+    private void ConvertFromNaturalToRoman()
+    {
+        _naturalResponse.RomanNumberConverted = "III";
+    }
 
 }
