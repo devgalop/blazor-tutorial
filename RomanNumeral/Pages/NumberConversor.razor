@@ -29,7 +29,17 @@
         }
     }else if(_conversionTypeSelected == 2)
     {
-        <p>Se ha seleccionado la 2</p>
+        <div class="">
+            <label for="">Number:</label>
+            <input type="text" placeholder="Write the roman number" @bind="_romanRequest.RomanNumber">
+            <button class="btn btn-primary" @onclick="ConvertFromRomanToNatural">Convert</button>
+        </div>
+        @if(_romanRespone.NumberConverted > 0)
+        {
+            <div class="" style="padding-top: 20px">
+                <h4 class="alert alert-primary">The roman number @_romanRequest.RomanNumber converted to natural number is: @_romanRespone.NumberConverted</h4>
+            </div>
+        }
     }
 </div>
 
@@ -66,6 +76,11 @@
         _naturalResponse.RomanNumberConverted = GetRomanNumber(_naturalRequest.Number);
     }
 
+    private void ConvertFromRomanToNatural()
+    {
+        _romanRespone.NumberConverted = GetNaturalNumber(_romanRequest.RomanNumber.ToUpper());
+    }
+
     private string GetRomanNumber(int number)
     {
         if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
@@ -83,6 +98,39 @@
         if (number >= 5) return "V" + GetRomanNumber(number - 5);
         if (number >= 4) return "IV" + GetRomanNumber(number - 4);
         if (number >= 1) return "I" + GetRomanNumber(number - 1);
+        throw new ArgumentOutOfRangeException("something bad happened");
+    }
+
+    private int GetNaturalNumber(string romanNumber) 
+    {
+        int numberConverted = 0;
+        int nextNumber = 0;
+        int actualNumber = 0;
+        for (var i = 0; i < romanNumber.Length-1; i++)
+        {
+            actualNumber = GetNumber(romanNumber.ToCharArray()[i]);
+            nextNumber = GetNumber(romanNumber.ToCharArray()[i+1]);
+            if (actualNumber < nextNumber)
+            {
+                numberConverted -= actualNumber;
+                continue;
+            }
+            numberConverted += actualNumber;
+        }
+        numberConverted +=nextNumber;
+        return numberConverted;
+    }
+
+    private int GetNumber(char romanNumber)
+    {
+        if(string.IsNullOrEmpty(romanNumber.ToString())) throw new ArgumentOutOfRangeException("It's not a valid number");
+        if(romanNumber == 'M') return 1000;
+        if(romanNumber == 'D') return 500;
+        if(romanNumber == 'C') return 100;
+        if(romanNumber == 'L') return 50;
+        if(romanNumber == 'X') return 10;
+        if(romanNumber == 'V') return 5;
+        if(romanNumber == 'I') return 1;
         throw new ArgumentOutOfRangeException("something bad happened");
     }
 
