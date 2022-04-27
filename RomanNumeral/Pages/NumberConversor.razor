@@ -106,18 +106,23 @@
         int numberConverted = 0;
         int nextNumber = 0;
         int actualNumber = 0;
-        for (var i = 0; i < romanNumber.Length-1; i++)
+        if (romanNumber.Length > 1)
         {
-            actualNumber = GetNumber(romanNumber.ToCharArray()[i]);
-            nextNumber = GetNumber(romanNumber.ToCharArray()[i+1]);
-            if (actualNumber < nextNumber)
+            for (var i = 0; i < romanNumber.Length-1; i++)
             {
-                numberConverted -= actualNumber;
-                continue;
+                actualNumber = GetNumber(romanNumber.ToCharArray()[i]);
+                nextNumber = GetNumber(romanNumber.ToCharArray()[i+1]);
+                if (actualNumber < nextNumber)
+                {
+                    numberConverted -= actualNumber;
+                    continue;
+                }
+                numberConverted += actualNumber;
             }
-            numberConverted += actualNumber;
+            numberConverted +=nextNumber;
+            return numberConverted;
         }
-        numberConverted +=nextNumber;
+        numberConverted = GetNumber(romanNumber.ToCharArray()[0]);
         return numberConverted;
     }
 
